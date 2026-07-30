@@ -4,7 +4,7 @@ env:
   secrets-manager:
     DOCKERHUB_USERNAME: "dockerhub/credentials:username"
     DOCKERHUB_PASSWORD: "dockerhub/credentials:password"
-    EC2_SSH_KEY: "ec2/ssh-key"
+    EC2_SSH_KEY: "ec2/ssh-key:private-key"
 
 phases:
   pre_build:
@@ -23,7 +23,7 @@ phases:
       - docker push $DOCKERHUB_USERNAME/my-python-app:latest
       
       - echo Preparing SSH key for EC2 deployment...
-      - echo "$EC2_SSH_KEY" > ec2_key.pem
+      - echo "$EC2_SSH_KEY" | sed -e 's/\\n/\n/g' > ec2_key.pem
       - chmod 600 ec2_key.pem
       
       - echo Deploying to EC2 instance...
