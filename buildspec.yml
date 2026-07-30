@@ -12,7 +12,7 @@ phases:
       - echo Logging in to Docker Hub securely...
       - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
       - echo Setting up SSH key...
-      - python3 -c 'import json, os; secret = json.loads(os.environ["EC2_SSH_KEY_JSON"]); print(secret.get("private-key", os.environ["EC2_SSH_KEY_JSON"]))' > ec2_key.pem
+      - echo "$EC2_SSH_KEY" > ec2_key.pem
       - chmod 600 ec2_key.pem
   build:
     commands:
@@ -24,8 +24,5 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image to Docker Hub...
       - docker push $DOCKERHUB_USERNAME/my-python-app:latest
-      
-      
-      
       - echo Deploying to EC2 instance...
       - ssh -o StrictHostKeyChecking=no -i ec2_key.pem ec2-user@52.54.89.75 "docker pull $DOCKERHUB_USERNAME/my-python-app:latest && docker stop python-app-container || true && docker rm python-app-container || true &&  docker run -d -p 80:8080 --name python-app-container $DOCKERHUB_USERNAME/my-python-app:latest "
