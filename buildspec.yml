@@ -21,5 +21,5 @@ phases:
       - echo Pushing the Docker image to Docker Hub...
       - docker push $DOCKERHUB_USERNAME/my-python-app:latest
       - echo Deploying to Kubernetes cluster...
-      - kubectl apply -f deployment.yaml
+     # - kubectl apply -f deployment.yaml
       
