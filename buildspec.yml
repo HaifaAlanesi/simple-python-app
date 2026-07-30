@@ -27,8 +27,4 @@ phases:
       - chmod 600 ec2_key.pem
       
       - echo Deploying to EC2 instance...
-      - ssh -o StrictHostKeyChecking=no -i ec2_key.pem ec2-user@52.54.89.75
-          docker pull $DOCKERHUB_USERNAME/my-python-app:latest &&
-          docker stop python-app-container || true &&
-          docker rm python-app-container || true &&
-          docker run -d -p 80:8080 --name python-app-container $DOCKERHUB_USERNAME/my-python-app:latest"
+      - ssh -o StrictHostKeyChecking=no -i ec2_key.pem ec2-user@52.54.89.75 "docker pull $DOCKERHUB_USERNAME/my-python-app:latest && docker stop python-app-container || true && docker rm python-app-container || true &&  docker run -d -p 80:8080 --name python-app-container $DOCKERHUB_USERNAME/my-python-app:latest "
